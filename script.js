@@ -23,12 +23,16 @@ function removeTransition(e) {
 const keys = Array.from(document.querySelectorAll(".key"));
 keys.forEach((key) => key.addEventListener("transitionend", removeTransition));
 window.addEventListener("click", (e) => {
-  if (e.target.classList[0] != "key") {
+  if (
+    e.target.parentNode.classList[0] != "key" &&
+    e.target.parentNode.classList[0] != "keys"
+  ) {
     playSound(null);
+  } else {
+    keys.forEach((key) =>
+      key.addEventListener("pointerdown", (e) => {
+        playSound(e.currentTarget.dataset.key);
+      })
+    );
   }
-  keys.forEach((key) =>
-    key.addEventListener("click", (e) => {
-      playSound(e.currentTarget.dataset.key);
-    })
-  );
 });
